@@ -10,9 +10,11 @@ body{
     background-color: black;
     height: 100vh;
 
+    padding: 2rem;
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 2rem;
 }
@@ -23,7 +25,7 @@ body{
 }
 
 #game-container{
-    --board-size: 500px;
+    --board-size: 400px;
     --board-gap: 1rem;
     
     width: var(--board-size);
@@ -97,4 +99,37 @@ button{
     font-size: 1rem;
     font-weight: bold;
     color: purple;
+}
+
+dialog{
+    --dialog-width: 300px; 
+
+    background-color: transparent;
+    border: 0;
+    width: var(--dialog-width);
+
+    margin-left: calc(100vw / 2 - var(--dialog-width) / 2);
+
+    margin-top: 200px;
+}
+
+dialog::backdrop{
+    background-color: rgba(0, 0, 0, 50%);
+}
+
+form{
+    background-color: white;
+    border: .2rem solid purple;
+    padding: 2rem;
+    border-radius: 1rem;
+    
+
+    display: flex;
+    flex-direction: column;
+
+    gap:1rem;
+}
+
+form button{
+    
 }

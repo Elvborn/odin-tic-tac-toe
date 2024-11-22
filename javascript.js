@@ -3,8 +3,6 @@ const Player = function(name, mark) {
     this.mark = mark;
 }
 
-const players = [new Player("Player 1", "X"), new Player("Player 2", "O")];
-
 const GameBoard = (function(){
     let board = [];
 
@@ -18,6 +16,7 @@ const GameBoard = (function(){
         }
         
         board[position] = player;
+
 
         if(gameOver()){
             GameManager.gameOver();
@@ -100,6 +99,8 @@ const Display = (function(){
     const ul = document.querySelector("ul");
     const output = document.querySelector(".output");
     const footer = document.querySelector("#footer");
+    const dialog = document.querySelector("dialog");
+    const form = document.querySelector("form");
     
     function update(){
         ul.innerHTML = "";
@@ -108,7 +109,9 @@ const Display = (function(){
         for(let i=0; i < 9; i++){
             const li = document.createElement("li");
             li.setAttribute("index", i);
-            li.addEventListener("click", handleClick);
+            li.addEventListener("click", (event) => {
+                GameManager.play(event.target.getAttribute("index"));
+            });
 
             ul.append(li);
 
@@ -119,9 +122,24 @@ const Display = (function(){
             }
         }
     }
+    
+    function getPlayerNames(){
+        dialog.showModal()
 
-    function handleClick(event){
-        GameManager.play(event.target.getAttribute("index"));
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const formData = Object.fromEntries(new FormData(form));
+
+            dialog.close();
+
+            const players = [
+                new Player(formData.playerOneName, "X"),
+                new Player(formData.playerTwoName, "O"),
+            ];
+
+            GameManager.setPlayers(players);
+        });
     }
 
     function displayWinner(winnerName){
@@ -142,6 +160,7 @@ const Display = (function(){
     }
 
     return {
+        getPlayerNames,
         update,
         displayWinner,
         reset
@@ -149,9 +168,12 @@ const Display = (function(){
 })();
 
 const GameManager = (function(){
+    let players = [];
+
     let currentPlayer = 0;
     let isGameOver = false;
-
+    
+    Display.getPlayerNames();
     Display.update();
 
     function play(position){
@@ -176,6 +198,12 @@ const GameManager = (function(){
         isGameOver = true;
     }
 
+    function setPlayers(value){
+        players = value;
+
+        console.log(players)
+    }
+
     function reset(){
         currentPlayer = 0;
         isGameOver = false;
@@ -187,6 +215,7 @@ const GameManager = (function(){
     return {
         play,
         reset,
-        gameOver
+        gameOver,
+        setPlayers
     }
 })();
