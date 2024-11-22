@@ -30,19 +30,6 @@ const GameBoard = (function(){
         board = [];
     }
 
-    function displayBoard(){
-        for(let i=0; i < 3; i++){
-            let row = "";
-
-            for(let j=0; j < 3; j++){
-                const mark = board[(i*3)+j] !== undefined ? board[(i*3)+j].mark : "-";
-                row += `${mark} `
-            }
-
-            console.log(row);
-        }
-    }
-
     function isEqual(positions){
         return positions.every(function(pos){
             return pos === positions[0];
@@ -51,7 +38,7 @@ const GameBoard = (function(){
 
     function gameOver(){
         let positions = [];
-        
+
         // Check horizontal
         for(let row=0; row < 3; row++){
             positions = [board[(row*3)+0], board[(row*3)+1], board[(row*3)+2]]
@@ -82,6 +69,13 @@ const GameBoard = (function(){
         if(!positions.includes(undefined))
             if(isEqual(positions))
                 return true;
+
+        
+        // Check if board is full
+        if(board.length == 9 && !board.includes(undefined)){
+            console.log();
+            GameManager.reset();
+        }
     }
 
     function getBoard(){
